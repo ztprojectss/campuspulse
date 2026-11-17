@@ -1,0 +1,31 @@
+<%- include('partials/header') %>
+<section class="container section">
+  <div class="page-head">
+    <h1>Contact us</h1>
+    <p class="muted">Want your club's event listed, or found a problem? Get in touch.</p>
+  </div>
+  <div class="contact-grid">
+    <div class="card contact-info">
+      <h2 class="h3">CampusPulse Team</h2>
+      <div class="info-row"><span class="info-icon">✉️</span><div><strong>Email</strong><br>hello@campuspulse.test</div></div>
+      <div class="info-row"><span class="info-icon">📞</span><div><strong>Phone</strong><br>(760) 555-0142</div></div>
+      <div class="info-row"><span class="info-icon">📍</span><div><strong>Office</strong><br>Student Union, Suite 214<br>333 University Way</div></div>
+      <div class="info-row"><span class="info-icon">🕘</span><div><strong>Office hours</strong><br>Mon–Thu 9 AM – 5 PM<br>Fri 9 AM – 1 PM</div></div>
+    </div>
+    <form class="card form" method="post" action="/contact" novalidate>
+      <h2 class="h3">Send a message</h2>
+      <% if (errors.length) { %>
+        <div class="flash flash-error"><% errors.forEach(e => { %><div><%= e %></div><% }) %></div>
+      <% } %>
+      <input type="hidden" name="_csrf" value="<%= csrf %>">
+      <div class="row-2">
+        <label>Name<input name="name" value="<%= form.name || (user ? user.name : '') %>" required></label>
+        <label>Email<input type="email" name="email" value="<%= form.email || (user ? user.email : '') %>" required></label>
+      </div>
+      <label>Subject<input name="subject" value="<%= form.subject || '' %>" required></label>
+      <label>Message<textarea name="body" rows="6" required><%= form.body || '' %></textarea></label>
+      <button class="btn btn-primary" type="submit">Send message</button>
+    </form>
+  </div>
+</section>
+<%- include('partials/footer') %>

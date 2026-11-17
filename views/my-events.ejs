@@ -1,0 +1,26 @@
+<%- include('partials/header') %>
+<section class="container section">
+  <div class="page-head">
+    <h1>My events</h1>
+    <p class="muted">Events you've RSVP'd to, <%= user.name %>.</p>
+  </div>
+  <% if (events.length) { %>
+    <div class="list">
+      <% events.forEach(e => { %>
+        <a class="card list-item <%= e.starts_at < now ? 'is-past' : '' %>" href="/events/<%= e.id %>">
+          <div class="cal">
+            <span><%= new Date(e.starts_at).toLocaleDateString('en-US', { month: 'short' }) %></span>
+            <strong><%= new Date(e.starts_at).getDate() %></strong>
+          </div>
+          <div>
+            <h3><%= e.title %></h3>
+            <p class="muted"><%= fmtTime(e.starts_at) %> · <%= e.location %><%= e.starts_at < now ? ' · Ended' : '' %></p>
+          </div>
+        </a>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <div class="empty">You haven't RSVP'd to anything yet. <a href="/events">Find an event →</a></div>
+  <% } %>
+</section>
+<%- include('partials/footer') %>

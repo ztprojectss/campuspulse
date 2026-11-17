@@ -1,0 +1,95 @@
+<%- include('../partials/header') %>
+<section class="container section">
+  <div class="section-head">
+    <div>
+      <h1>Admin dashboard</h1>
+      <p class="muted">Manage events, read messages and manage users.</p>
+    </div>
+    <a href="/admin/events/new" class="btn btn-primary">+ New event</a>
+  </div>
+
+  <div class="admin-stats">
+    <div class="card stat-card"><strong><%= events.length %></strong><span>Total events</span></div>
+    <div class="card stat-card"><strong><%= events.filter(e => e.starts_at >= now).length %></strong><span>Upcoming</span></div>
+    <div class="card stat-card"><strong><%= users.length %></strong><span>Users</span></div>
+    <div class="card stat-card"><strong><%= messages.length %></strong><span>Messages</span></div>
+  </div>
+
+  <h2 id="events">Events</h2>
+  <div class="card table-wrap">
+    <table>
+      <thead><tr><th>Event</th><th>Date</th><th>Category</th><th>RSVPs</th><th class="right">Actions</th></tr></thead>
+      <tbody>
+        <% events.forEach(e => { %>
+          <tr class="<%= e.starts_at < now ? 'is-past' : '' %>">
+            <td data-label="Event"><a href="/events/<%= e.id %>"><strong><%= e.title %></strong></a><br><small class="muted"><%= e.location %></small></td>
+            <td data-label="Date"><%= fmtDate(e.starts_at) %><br><small class="muted"><%= fmtTime(e.starts_at) %></small></td>
+            <td data-label="Category"><span class="chip chip-<%= e.category.toLowerCase() %>"><%= e.category %></span></td>
+            <td data-label="RSVPs"><%= e.rsvp_count %><%= e.capacity ? ` / ${e.capacity}` : '' %></td>
+            <td class="right actions">
+              <a class="btn btn-light btn-sm" href="/admin/events/<%= e.id %>/edit">Edit</a>
+              <form method="post" action="/admin/events/<%= e.id %>/delete" onsubmit="return confirm('Delete this event? This cannot be undone.')">
+                <input type="hidden" name="_csrf" value="<%= csrf %>">
+                <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+              </form>
+            </td>
+          </tr>
+        <% }) %>
+        <% if (!events.length) { %><tr><td colspan="5" class="center muted">No events yet.</td></tr><% } %>
+      </tbody>
+    </table>
+  </div>
+
+  <h2 id="messages">Contact messages</h2>
+  <% if (messages.length) { %>
+    <div class="list">
+      <% messages.forEach(m => { %>
+        <div class="card message">
+          <div class="message-head">
+            <div><strong><%= m.subject %></strong><br><small class="muted"><%= m.name %> · <a href="mailto:<%= m.email %>"><%= m.email %></a> · <%= fmtDate(m.created_at.replace(' ', 'T') + 'Z') %></small></div>
+            <form method="post" action="/admin/messages/<%= m.id %>/delete" onsubmit="return confirm('Delete this message?')">
+              <input type="hidden" name="_csrf" value="<%= csrf %>">
+              <button class="btn btn-ghost btn-sm" type="submit">Delete</button>
+            </form>
+          </div>
+          <p><%= m.body %></p>
+        </div>
+      <% }) %>
+    </div>
+  <% } else { %>
+    <div class="empty">No messages yet.</div>
+  <% } %>
+
+  <h2 id="users">Users</h2>
+  <div class="card table-wrap">
+    <table>
+      <thead><tr><th>Name</th><th>Email</th><th>RSVPs</th><th>Role</th><th class="right">Actions</th></tr></thead>
+      <tbody>
+        <% users.forEach(u => { %>
+          <tr>
+            <td data-label="Name"><%= u.name %></td>
+            <td data-label="Email"><%= u.email %></td>
+            <td data-label="RSVPs"><%= u.rsvp_count %></td>
+            <td data-label="Role"><span class="role role-<%= u.role %>"><%= u.role %></span></td>
+            <td class="right actions">
+              <% if (u.id !== user.id) { %>
+                <form method="post" action="/admin/users/<%= u.id %>/role">
+                  <input type="hidden" name="_csrf" value="<%= csrf %>">
+                  <input type="hidden" name="role" value="<%= u.role === 'admin' ? 'user' : 'admin' %>">
+                  <button class="btn btn-light btn-sm" type="submit"><%= u.role === 'admin' ? 'Make user' : 'Make admin' %></button>
+                </form>
+                <form method="post" action="/admin/users/<%= u.id %>/delete" onsubmit="return confirm('Delete this user and their RSVPs?')">
+                  <input type="hidden" name="_csrf" value="<%= csrf %>">
+                  <button class="btn btn-danger btn-sm" type="submit">Delete</button>
+                </form>
+              <% } else { %>
+                <small class="muted">You</small>
+              <% } %>
+            </td>
+          </tr>
+        <% }) %>
+      </tbody>
+    </table>
+  </div>
+</section>
+<%- include('../partials/footer') %>

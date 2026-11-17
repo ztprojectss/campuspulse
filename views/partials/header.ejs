@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title><%= title %> · CampusPulse</title>
+  <meta name="description" content="CampusPulse: discover and RSVP to campus events.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="/styles.css">
+  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'><rect width='32' height='32' rx='8' fill='%234f46e5'/><path d='M5 17h6l3-7 4 13 3-6h6' stroke='white' stroke-width='3' fill='none' stroke-linecap='round' stroke-linejoin='round'/></svg>">
+</head>
+<body>
+<header class="site-header">
+  <div class="container nav-wrap">
+    <a href="/" class="brand">
+      <span class="brand-mark" aria-hidden="true">
+        <svg viewBox="0 0 32 32"><path d="M5 17h6l3-7 4 13 3-6h6" stroke="currentColor" stroke-width="3" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>
+      </span>
+      CampusPulse
+    </a>
+    <input type="checkbox" id="nav-toggle" class="nav-toggle" aria-label="Toggle menu">
+    <label for="nav-toggle" class="nav-burger" aria-hidden="true"><span></span><span></span><span></span></label>
+    <nav class="nav">
+      <a href="/" class="<%= path === '/' ? 'active' : '' %>">Home</a>
+      <a href="/events" class="<%= path.startsWith('/events') ? 'active' : '' %>">Events</a>
+      <a href="/contact" class="<%= path === '/contact' ? 'active' : '' %>">Contact</a>
+      <% if (user) { %>
+        <a href="/my-events" class="<%= path === '/my-events' ? 'active' : '' %>">My Events</a>
+        <% if (user.role === 'admin') { %>
+          <a href="/admin" class="<%= path.startsWith('/admin') ? 'active' : '' %>">Admin</a>
+        <% } %>
+        <form method="post" action="/logout" class="nav-form">
+          <input type="hidden" name="_csrf" value="<%= csrf %>">
+          <button type="submit" class="btn btn-ghost btn-sm">Log out</button>
+        </form>
+      <% } else { %>
+        <a href="/login" class="<%= path === '/login' ? 'active' : '' %>">Log in</a>
+        <a href="/register" class="btn btn-primary btn-sm">Sign up</a>
+      <% } %>
+    </nav>
+  </div>
+</header>
+<main>
+<% if (flash) { %>
+  <div class="container">
+    <div class="flash flash-<%= flash.type %>" role="status"><%= flash.text %></div>
+  </div>
+<% } %>

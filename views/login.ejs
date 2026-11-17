@@ -1,0 +1,15 @@
+<%- include('partials/header') %>
+<section class="container auth">
+  <form class="card form auth-card" method="post" action="/login">
+    <h1 class="h2">Welcome back</h1>
+    <p class="muted">Log in to see full event details and RSVP.</p>
+    <% if (error) { %><div class="flash flash-error"><%= error %></div><% } %>
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <input type="hidden" name="next" value="<%= next %>">
+    <label>Email<input type="email" name="email" value="<%= email %>" autocomplete="email" required autofocus></label>
+    <label>Password<input type="password" name="password" autocomplete="current-password" required></label>
+    <button class="btn btn-primary btn-block" type="submit">Log in</button>
+    <p class="muted center">New here? <a href="/register">Create an account</a></p>
+  </form>
+</section>
+<%- include('partials/footer') %>

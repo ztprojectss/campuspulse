@@ -1,0 +1,54 @@
+<%- include('partials/header') %>
+<section class="hero">
+  <div class="container hero-inner">
+    <div class="hero-copy">
+      <span class="eyebrow">Your campus, all in one feed</span>
+      <h1>Never miss what's happening on campus.</h1>
+      <p class="lead">Browse career fairs, games, workshops and open mics. Create a free account to see full event details and save your spot.</p>
+      <div class="hero-actions">
+        <a href="/events" class="btn btn-primary">Browse events</a>
+        <% if (!user) { %><a href="/register" class="btn btn-light">Create free account</a><% } %>
+      </div>
+    </div>
+    <div class="hero-stats">
+      <div class="stat"><strong><%= stats.events %></strong><span>Upcoming events</span></div>
+      <div class="stat"><strong><%= stats.members %></strong><span>Members</span></div>
+      <div class="stat"><strong><%= stats.rsvps %></strong><span>RSVPs</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="container section">
+  <div class="section-head">
+    <div>
+      <h2>Coming up next</h2>
+      <p class="muted">A public preview of what's on the calendar.</p>
+    </div>
+    <a href="/events" class="link-arrow">See all events →</a>
+  </div>
+  <% if (featured.length) { %>
+    <div class="grid">
+      <% featured.forEach(e => { %><%- include('partials/event-card', { e }) %><% }) %>
+    </div>
+  <% } else { %>
+    <div class="empty">No upcoming events yet. Check back soon!</div>
+  <% } %>
+</section>
+
+<section class="container section">
+  <h2>Browse by category</h2>
+  <div class="cat-row">
+    <% categories.forEach(c => { %>
+      <a class="chip chip-lg chip-<%= c.toLowerCase() %>" href="/events?category=<%= c %>"><%= c %></a>
+    <% }) %>
+  </div>
+</section>
+
+<section class="container section">
+  <div class="features">
+    <div class="feature"><div class="feature-icon">🔎</div><h3>Discover</h3><p class="muted">Search and filter every event by keyword or category.</p></div>
+    <div class="feature"><div class="feature-icon">✅</div><h3>RSVP</h3><p class="muted">Members save their spot with one click and track it under My Events.</p></div>
+    <div class="feature"><div class="feature-icon">🛠️</div><h3>Managed</h3><p class="muted">Admins keep the calendar current: they add, edit and remove events.</p></div>
+  </div>
+</section>
+<%- include('partials/footer') %>

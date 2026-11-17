@@ -1,0 +1,33 @@
+<%- include('../partials/header') %>
+<section class="container section narrow">
+  <a href="/admin" class="link-back">← Back to dashboard</a>
+  <form class="card form" method="post" action="<%= action %>" novalidate>
+    <h1 class="h2"><%= title %></h1>
+    <% if (errors.length) { %>
+      <div class="flash flash-error"><% errors.forEach(e => { %><div><%= e %></div><% }) %></div>
+    <% } %>
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <label>Title<input name="title" value="<%= form.title || '' %>" required></label>
+    <div class="row-2">
+      <label>Category
+        <select name="category" required>
+          <option value="">Choose…</option>
+          <% categories.forEach(c => { %><option <%= c === form.category ? 'selected' : '' %>><%= c %></option><% }) %>
+        </select>
+      </label>
+      <label>Date &amp; time<input type="datetime-local" name="starts_at" value="<%= form.starts_at || '' %>" required></label>
+    </div>
+    <div class="row-2">
+      <label>Location<input name="location" value="<%= form.location || '' %>" required></label>
+      <label>Capacity <small class="muted">(optional)</small><input type="number" min="1" name="capacity" value="<%= form.capacity || '' %>"></label>
+    </div>
+    <label>Short summary <small class="muted">(public preview, 160 max)</small><input name="summary" maxlength="160" value="<%= form.summary || '' %>" required></label>
+    <label>Full description <small class="muted">(members only)</small><textarea name="description" rows="6" required><%= form.description || '' %></textarea></label>
+    <label>Image URL <small class="muted">(optional)</small><input type="url" name="image_url" value="<%= form.image_url || '' %>" placeholder="https://…"></label>
+    <div class="form-actions">
+      <a class="btn btn-ghost" href="/admin">Cancel</a>
+      <button class="btn btn-primary" type="submit">Save event</button>
+    </div>
+  </form>
+</section>
+<%- include('../partials/footer') %>

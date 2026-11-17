@@ -1,0 +1,20 @@
+{
+  "name": "campuspulse",
+  "version": "1.0.0",
+  "description": "CampusPulse - a full-stack campus events board with user accounts and an admin dashboard.",
+  "main": "server.js",
+  "private": true,
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node --watch server.js"
+  },
+  "engines": {
+    "node": ">=22.13"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cookie-session": "^2.1.0",
+    "ejs": "^3.1.10",
+    "express": "^4.21.2"
+  }
+}

@@ -1,0 +1,18 @@
+<%- include('partials/header') %>
+<section class="container auth">
+  <form class="card form auth-card" method="post" action="/register" novalidate>
+    <h1 class="h2">Create your account</h1>
+    <p class="muted">Free for students, faculty and staff.</p>
+    <% if (errors.length) { %>
+      <div class="flash flash-error"><% errors.forEach(e => { %><div><%= e %></div><% }) %></div>
+    <% } %>
+    <input type="hidden" name="_csrf" value="<%= csrf %>">
+    <label>Full name<input name="name" value="<%= form.name || '' %>" autocomplete="name" required></label>
+    <label>Email<input type="email" name="email" value="<%= form.email || '' %>" autocomplete="email" required></label>
+    <label>Password <small class="muted">(8+ characters)</small><input type="password" name="password" autocomplete="new-password" minlength="8" required></label>
+    <label>Confirm password<input type="password" name="confirm" autocomplete="new-password" required></label>
+    <button class="btn btn-primary btn-block" type="submit">Sign up</button>
+    <p class="muted center">Already have an account? <a href="/login">Log in</a></p>
+  </form>
+</section>
+<%- include('partials/footer') %>

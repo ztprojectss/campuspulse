@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: campuspulse
+    runtime: node
+    plan: free
+    buildCommand: npm install
+    startCommand: npm start
+    healthCheckPath: /
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: NODE_VERSION
+        value: "24"
+      - key: SESSION_SECRET
+        generateValue: true
+      - key: ADMIN_EMAIL
+        value: admin@campuspulse.test
+      - key: ADMIN_PASSWORD
+        sync: false

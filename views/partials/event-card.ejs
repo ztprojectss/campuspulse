@@ -1,0 +1,14 @@
+<a class="card event-card" href="/events/<%= e.id %>">
+  <div class="card-img" style="background-image: url('<%= e.image_url || '/placeholder.svg' %>')">
+    <span class="chip chip-<%= e.category.toLowerCase() %>"><%= e.category %></span>
+  </div>
+  <div class="card-body">
+    <div class="date-line"><%= fmtDate(e.starts_at) %> · <%= fmtTime(e.starts_at) %></div>
+    <h3><%= e.title %></h3>
+    <p class="muted"><%= e.summary %></p>
+    <div class="card-meta">
+      <span>📍 <%= e.location %></span>
+      <span><%= e.rsvp_count %> going</span>
+    </div>
+  </div>
+</a>
