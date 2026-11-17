@@ -54,10 +54,13 @@ db.exec(`
 // ---- Seed data -------------------------------------------------------------
 
 // Demo admin account. Override with ADMIN_EMAIL / ADMIN_PASSWORD environment variables.
-const ADMIN_EMAIL = (process.env.ADMIN_EMAIL || 'admin@campuspulse.test').toLowerCase();
+const ADMIN_EMAIL = (process.env.ADMIN_EMAIL || 'admin@campuspulse.test').trim().toLowerCase();
 // The built-in demo password is only used locally; production must set ADMIN_PASSWORD.
 const isProd = process.env.NODE_ENV === 'production';
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || (isProd ? null : 'ChangeMe!2026');
+const ADMIN_PASSWORD = (process.env.ADMIN_PASSWORD || '').trim() || (isProd ? null : 'ChangeMe!2026');
+if (ADMIN_PASSWORD) {
+  console.log(`Admin account: ${ADMIN_EMAIL} (password is ${ADMIN_PASSWORD.length} characters)`);
+}
 
 const existingAdmin = db.prepare('SELECT id FROM users WHERE email = ?').get(ADMIN_EMAIL);
 if (!ADMIN_PASSWORD) {
